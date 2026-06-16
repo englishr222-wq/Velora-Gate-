@@ -1,4 +1,4 @@
-BOT_TOKEN = "8911681335:AAEqlA3OD5xdiOOiZNrSBVjIbOX3aX4yv-I"
+BOT_TOKEN = "8691934519:AAHCJQqJj30ls2lo945GejxEsz0se3HwZLI"
 
 # Admin IDs - أضف معرفات الآدمن هنا
 ADMIN_IDS = [5146927330]  # استبدل برقم معرف الآدمن الخاص بك
