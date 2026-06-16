@@ -1,7 +1,7 @@
 BOT_TOKEN = "8691934519:AAHCJQqJj30ls2lo945GejxEsz0se3HwZLI"
 
 # Admin IDs - أضف معرفات الآدمن هنا
-ADMIN_IDS = [7665469293]  # استبدل برقم معرف الآدمن الخاص بك
+ADMIN_IDS = [7977349795]  # استبدل برقم معرف الآدمن الخاص بك
 
 # Database
 DB_FILE = "velora_gate.db"
