@@ -1,6 +1,11 @@
 import logging
+import os
+from dotenv import load_dotenv
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
+
+# تحميل متغيرات البيئة
+load_dotenv()
 
 # إعدادات التسجيل لمراقبة الأخطاء
 logging.basicConfig(
@@ -98,8 +103,9 @@ async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         
     elif data == 'referral':
         user_id = query.from_user.id
+        bot_username = context.bot.username
         # توليد رابط إحالة فريد بناءً على الـ ID الخاص بالمستخدم
-        ref_link = f"https://t.me/{(context.bot.username)}?start=ref_{user_id}"
+        ref_link = f"https://t.me/{bot_username}?start=ref_{user_id}"
         ref_text = (
             "🔗 *نظام الإحالة وكسب الأرباح:*\n\n"
             "شارك الرابط الخاص بك مع أصدقائك، وعند قيامهم بأي عملية شراء ستحصل على عمولة تضاف لرصيدك تلقائياً!\n\n"
@@ -108,8 +114,9 @@ async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         await query.edit_message_text(text=ref_text, reply_markup=back_keyboard, parse_mode='Markdown')
         
     elif data == 'support':
+        support_username = os.getenv('SUPPORT_USERNAME', 'YourSupportUsername')
         support_keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton("👨‍💻 مراسلة الدعم المباشر", url="https://t.me/YourSupportUsername")], # ضع يوزر الدعم هنا
+            [InlineKeyboardButton("👨‍💻 مراسلة الدعم المباشر", url=f"https://t.me/{support_username}")],
             [InlineKeyboardButton("⬅️ العودة للقائمة الرئيسية", callback_data='main_menu')]
         ])
         await query.edit_message_text(text=SUPPORT_INFO, reply_markup=support_keyboard, parse_mode='Markdown')
@@ -134,8 +141,11 @@ async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         await query.edit_message_text(text=prod_details, reply_markup=back_keyboard, parse_mode='Markdown')
 
 def main() -> None:
-    # ضع التوكن الخاص بالبوت الذي حصلت عليه من BotFather هنا
-    BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN_HERE"
+    # قراءة التوكن من ملف .env
+    BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+    
+    if not BOT_TOKEN:
+        raise ValueError("❌ لم يتم العثور على TELEGRAM_BOT_TOKEN في ملف .env")
     
     application = Application.builder().token(BOT_TOKEN).build()
 
@@ -148,10 +158,3 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
-
-python-telegram-bot==21.1.1
-
-# Ignore environment variables and tokens
-config.py
-.env
-__pycache__/
